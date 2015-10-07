@@ -11,5 +11,16 @@ app.controller('MainCtrl', [
 		  {title: 'post 3', upvotes: 20},
 		];
 
+		// Functionality to add posts
+		$scope.addPost = function(){
+
+			// Prevent user from submitting empty title post
+			if(!$scope.title || $scope.title === ''){ return ;}
+
+			var newPost = {title:$scope.title, upvotes: 0};
+			$scope.posts.push(newPost);
+			// reset
+			$scope.title = '';
+		}
 	}
 ]);
