@@ -16,16 +16,25 @@ app.controller('MainCtrl', [
 			// Prevent user from submitting empty title post
 			if(!$scope.title || $scope.title === ''){ return ;}
 
-			var newPost = {title:$scope.title, upvotes: 0};
+			var newPost = {
+				title : $scope.title, 
+				link : $scope.link, 
+				upvotes : 0
+			};
+			
 			$scope.posts.push(newPost);
 			// reset
 			$scope.title = '';
+			$scope.link = '';
 		}
 
 		// Upvoting Functionality 
 		$scope.incrementUpvotes = function(post){
 			post.upvotes += 1;
 		};
+
+		// Submit link functionality
+
 
 	}
 ]);
