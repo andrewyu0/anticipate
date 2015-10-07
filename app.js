@@ -11,9 +11,8 @@ app.controller('MainCtrl', [
 		  {title: 'post 3', upvotes: 20},
 		];
 
-		// Functionality to add posts
+		// Posting Functionality 
 		$scope.addPost = function(){
-
 			// Prevent user from submitting empty title post
 			if(!$scope.title || $scope.title === ''){ return ;}
 
@@ -22,5 +21,11 @@ app.controller('MainCtrl', [
 			// reset
 			$scope.title = '';
 		}
+
+		// Upvoting Functionality 
+		$scope.incrementUpvotes = function(post){
+			post.upvotes += 1;
+		};
+
 	}
 ]);
