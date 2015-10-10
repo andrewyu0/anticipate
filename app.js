@@ -1,4 +1,8 @@
-var app = angular.module('anticipate', []);
+// APP DEFINITION
+
+var app = angular.module('anticipate', [
+	'ui.router'
+]);
 
 // FACTORY
 
@@ -16,6 +20,10 @@ app.factory('posts', [function(){
 
 app.controller('MainCtrl', [
 	'$scope', 'posts', function($scope, posts){
+
+		console.log("posts service output:")
+		console.log(posts)
+
 
 		$scope.test = 'Hello World!';
 
