@@ -67,16 +67,25 @@ app.controller('MainCtrl', [
 
 		// Posting Functionality 
 		$scope.addPost = function(){
+
 			// Prevent user from submitting empty title post
-			if(!$scope.title || $scope.title === ''){ return ;}
+			if(!$scope.title || $scope.title === ''){ 
+				console.log("Post requires a title!")
+				return ;
+			}
 
 			var newPost = {
-				title : $scope.title, 
-				link : $scope.link, 
-				upvotes : 0
+				title    : $scope.title, 
+				link     : $scope.link, 
+				upvotes  : 0,
+				comments : [
+					{author: "Joe", body: "Whats up!", upvotes: 1},
+					{author: "Joe2", body: "Whats up man!", upvotes: 1}
+				]
 			};
 			
 			$scope.posts.push(newPost);
+			
 			// reset
 			$scope.title = '';
 			$scope.link = '';
@@ -98,7 +107,7 @@ app.controller('MainCtrl', [
 app.controller('PostsCtrl', [
 '$scope',
 '$stateParams',
-'posts'
+'posts',
 function($scope, $stateParams, posts){
 
 }]);
