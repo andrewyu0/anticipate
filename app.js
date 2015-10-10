@@ -13,13 +13,19 @@ app.config([
 	'$stateProvider',
 	'$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider){
-
 		$stateProvider
 		.state('home', {
 			url: '/home',
 			templateUrl: '/home.html',
 			controller: 'MainCtrl'
 		})
+		// State where individual post can be accessed 
+		.state('posts', {
+			url: '/posts/{id}',
+			templateUrl: '/posts.html',
+			controller: 'PostsCtrl'
+		})
+		// Test state
 		.state('test', {
 			url: '/test',
 			templateUrl: '/test.html',
@@ -86,3 +92,13 @@ app.controller('MainCtrl', [
 
 	}
 ]);
+
+// Posts controller 
+
+app.controller('PostsCtrl', [
+'$scope',
+'$stateParams',
+'posts'
+function($scope, $stateParams, posts){
+
+}]);
