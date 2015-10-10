@@ -24,12 +24,6 @@ app.config([
 			url: '/posts/{id}',
 			templateUrl: '/posts.html',
 			controller: 'PostsCtrl'
-		})
-		// Test state
-		.state('test', {
-			url: '/test',
-			templateUrl: '/test.html',
-			controller: 'MainCtrl'
 		});
 		// If app receives an undefined URL, redirect to home 
 		$urlRouterProvider.otherwise('home');
@@ -40,7 +34,7 @@ app.config([
  *  FACTORY    *
  ****************/
 
-app.factory('posts', [function(){
+app.factory('postsService', [function(){
 
 	var output = {
 		posts: []
@@ -55,7 +49,7 @@ app.factory('posts', [function(){
  ****************/
 
 app.controller('MainCtrl', [
-	'$scope', 'posts', function($scope, posts){
+	'$scope', 'postsService', function($scope, postsService){
 
 		$scope.test = 'Hello World!';
 
@@ -107,7 +101,9 @@ app.controller('MainCtrl', [
 app.controller('PostsCtrl', [
 '$scope',
 '$stateParams',
-'posts',
-function($scope, $stateParams, posts){
+'postsService',
+function($scope, $stateParams, postsService){
+	// Grabs appropriate post from 'posts' service using id from $stateParams
+	$scope.posts = postsService.posts[$stateParams.id];
 
 }]);
