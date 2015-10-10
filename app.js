@@ -74,36 +74,19 @@ app.controller('MainCtrl', ['$scope', 'postsService', function($scope, postsServ
 					{author: "Joe2", body: "Whats up man!", upvotes: 1}
 				]
 			};
+
 			// Push new post into array
 			$scope.posts.push(newPost);
 			
 			// reset
 			$scope.title = '';
 			$scope.link = '';
-		}
-
-		// ADD COMMENT FUNCTIONALITY
-		$scope.addComment = function(){
-			
-			var newComment = {
-				body    : $scope.body,
-				author  : 'user',
-				upvotes : 0
-			};
-
-			$scope.post.comments.push(newComment);
-			// reset
-			$scope.body = '';
-		}
+		};
 
 		// Upvoting Functionality 
 		$scope.incrementUpvotes = function(post){
 			post.upvotes += 1;
 		};
-
-		// Submit link functionality
-
-
 	}
 ]);
 
@@ -119,4 +102,18 @@ function($scope, $stateParams, postsService){
 	$scope.post = postsService.posts[$stateParams.id];
 
 	console.log($scope.post)
+
+	// ADD COMMENT FUNCTIONALITY
+	$scope.addComment = function(){
+		
+		var newComment = {
+			body    : $scope.body,
+			author  : 'user',
+			upvotes : 0
+		};
+
+		$scope.post.comments.push(newComment);
+		// reset
+		$scope.body = '';
+	}	
 }]);
