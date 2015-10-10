@@ -1,10 +1,13 @@
-// APP DEFINITION
-
+/****************
+ * APP *
+ ****************/
 var app = angular.module('anticipate', [
 	'ui.router'
 ]);
 
-// CONFIG THE APP
+/****************
+ * STATES *
+ ****************/
 
 app.config([
 	'$stateProvider',
@@ -22,7 +25,9 @@ app.config([
 
 }]);
 
-// FACTORY
+/****************
+ *  FACTORY    *
+ ****************/
 
 app.factory('posts', [function(){
 
@@ -34,14 +39,12 @@ app.factory('posts', [function(){
 
 }]);
 
-// CONTROLLER
+/***************
+ * CONTROLLER *
+ ****************/
 
 app.controller('MainCtrl', [
 	'$scope', 'posts', function($scope, posts){
-
-		console.log("posts service output:")
-		console.log(posts)
-
 
 		$scope.test = 'Hello World!';
 
