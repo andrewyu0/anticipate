@@ -37,28 +37,24 @@ app.config([
 app.factory('postsService', [function(){
 
 	var output = {
-		posts: []
+		posts : [
+		  {title: 'post 1', upvotes: 5, link: '', comments: []},
+		  {title: 'post 2', upvotes: 2, link: '', comments: []},
+		  {title: 'post 3', upvotes: 20, link: '', comments: []},
+		]
 	};
 
 	return output;
 
 }]);
 
-
 /***************
  * CONTROLLER *
  ****************/
 
-app.controller('MainCtrl', [
-	'$scope', 'postsService', function($scope, postsService){
+app.controller('MainCtrl', ['$scope', 'postsService', function($scope, postsService, postService){
 
-		$scope.test = 'Hello World!';
-
-		$scope.posts = [
-		  {title: 'post 1', upvotes: 5, link: '', comments: []},
-		  {title: 'post 2', upvotes: 2, link: '', comments: []},
-		  {title: 'post 3', upvotes: 20, link: '', comments: []},
-		];
+		$scope.posts = postsService.posts;
 
 		// ADD POST FUNCTIONALITY
 		$scope.addPost = function(){
@@ -118,7 +114,9 @@ app.controller('PostsCtrl', [
 '$stateParams',
 'postsService',
 function($scope, $stateParams, postsService){
-	// Grabs appropriate post from 'posts' service using id from $stateParams
-	$scope.posts = postsService.posts[$stateParams.id];
 
+	// Grabs appropriate post from 'posts' service using id from $stateParams
+	$scope.post = postsService.posts[$stateParams.id];
+
+	console.log($scope.post)
 }]);
