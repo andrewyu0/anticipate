@@ -19,6 +19,11 @@ app.config([
 			url: '/home',
 			templateUrl: '/home.html',
 			controller: 'MainCtrl'
+		})
+		.state('test', {
+			url: '/test',
+			templateUrl: '/test.html',
+			controller: 'MainCtrl'
 		});
 		// If app receives an undefined URL, redirect to home 
 		$urlRouterProvider.otherwise('home');
