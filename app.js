@@ -1,7 +1,21 @@
 var app = angular.module('anticipate', []);
 
+// FACTORY
+
+app.factory('posts', [function(){
+
+	var output = {
+		posts: []
+	};
+
+	return output;
+
+}]);
+
+// CONTROLLER
+
 app.controller('MainCtrl', [
-	'$scope', function($scope){
+	'$scope', 'posts', function($scope, posts){
 
 		$scope.test = 'Hello World!';
 
