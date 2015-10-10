@@ -4,6 +4,24 @@ var app = angular.module('anticipate', [
 	'ui.router'
 ]);
 
+// CONFIG THE APP
+
+app.config([
+	'$stateProvider',
+	'$urlRouterProvider',
+	function($stateProvider, $urlRouterProvider){
+
+		$stateProvider
+		.state('home', {
+			url: '/home',
+			templateUrl: '/home.html',
+			controller: 'MainCtrl'
+		});
+		// If app receives an undefined URL, redirect to home 
+		$urlRouterProvider.otherwise('home');
+
+}]);
+
 // FACTORY
 
 app.factory('posts', [function(){
