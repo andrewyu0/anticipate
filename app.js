@@ -44,6 +44,7 @@ app.factory('postsService', [function(){
 
 }]);
 
+
 /***************
  * CONTROLLER *
  ****************/
@@ -54,20 +55,20 @@ app.controller('MainCtrl', [
 		$scope.test = 'Hello World!';
 
 		$scope.posts = [
-		  {title: 'post 1', upvotes: 5, link: ''},
-		  {title: 'post 2', upvotes: 2, link: ''},
-		  {title: 'post 3', upvotes: 20, link: ''},
+		  {title: 'post 1', upvotes: 5, link: '', comments: []},
+		  {title: 'post 2', upvotes: 2, link: '', comments: []},
+		  {title: 'post 3', upvotes: 20, link: '', comments: []},
 		];
 
-		// Posting Functionality 
+		// ADD POST FUNCTIONALITY
 		$scope.addPost = function(){
-
+			
 			// Prevent user from submitting empty title post
 			if(!$scope.title || $scope.title === ''){ 
 				console.log("Post requires a title!")
 				return ;
 			}
-
+			// New Post Object
 			var newPost = {
 				title    : $scope.title, 
 				link     : $scope.link, 
@@ -77,12 +78,26 @@ app.controller('MainCtrl', [
 					{author: "Joe2", body: "Whats up man!", upvotes: 1}
 				]
 			};
-			
+			// Push new post into array
 			$scope.posts.push(newPost);
 			
 			// reset
 			$scope.title = '';
 			$scope.link = '';
+		}
+
+		// ADD COMMENT FUNCTIONALITY
+		$scope.addComment = function(){
+			
+			var newComment = {
+				body    : $scope.body,
+				author  : 'user',
+				upvotes : 0
+			};
+
+			$scope.post.comments.push(newComment);
+			// reset
+			$scope.body = '';
 		}
 
 		// Upvoting Functionality 
