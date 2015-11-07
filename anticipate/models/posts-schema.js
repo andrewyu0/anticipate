@@ -16,4 +16,14 @@ var PostSchema = new mongoose.Schema({
 	]
 });
 
+
+// Methods
+
+PostSchema.methods.upvote = function(cb){
+	// sets val of upvotes to itself + 1
+	this.upvotes += 1;
+	// saves the doc and runs cb if passed
+	this.save(cb);
+};
+
 mongoose.model('Post', PostSchema);
