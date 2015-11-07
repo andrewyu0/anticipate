@@ -66,6 +66,7 @@ router.get('/posts/:post', function(req, res) {
   res.json(req.post);
 });
 
+// Add upvote route
 router.put('/posts/:post/upvote', function(req, res, next){
 	// invoke post's upvote() method 
 	req.post.upvote(function(err, post){
@@ -75,6 +76,25 @@ router.put('/posts/:post/upvote', function(req, res, next){
 	});
 });
 
+// COMMENTS
+router.post('/posts/:post/comments', function(req, res, next){
+	// create new comment
+	var comment = new Comment(req.body);
+	// set post property on comment
+	comment.post = req.post;
+	// save the comment to db
+	comment.save(function(err, comment){
+		if(err){return next(err);}
+		// add the comment to the post to create two-way relationship
+		req.post.comments.push(comment);
+		req.post.save(function(err,post){
+			if(err){return next(err);}
+			// Send saved comment
+			res.json(comment);
+		});
+
+	});
+});
 
 
 
