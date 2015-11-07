@@ -11,6 +11,11 @@ router.get('/', function(req, res, next) {
 });
 
 
+/************************
+ *        POSTS         * 
+ ************************/
+
+
 router.get('/posts', function(req, res, next) {
   Post.find(function(err, posts){
     if(err){ return next(err); }
@@ -30,13 +35,18 @@ router.post('/posts', function(req, res, next) {
   });
 });
 
-// Create a route for PRELOADING post objects 
-// Any route with :post in it, this function will be run first. All remaining routes are some form of "/posts/:id"
-// router.param(post) > return query, exec on query for promise > next() 
+// POSTID PARAM MIDDLEWARE
 
-router.param('post', function(req, res, next, id) {
-  
-	console.log("--------- /post param hit: " + "\n" + "This is the id in params:" + "\n"+ id)
+// Create a route for PRELOADING post objects 
+// Any route with :postId in it, this function will be run first. All remaining routes are some form of "/posts/:id"
+// router.param(post) > return query, exec on query for promise > next() 
+// Params of router.param's cb are always: req, res, next, param value, param name
+
+router.param('postId', function(req, res, next, id, name) {
+	
+	console.log("----- /post param hit: ")
+ 	console.log("This is the id in params:" + id)	// "5633b0bbd70442bc34a194af"
+	console.log("name of param: " + name) // "postId"
 
 	// findById returns a query, not doc
   var query = Post.findById(id);
@@ -52,22 +62,22 @@ router.param('post', function(req, res, next, id) {
     // Add doc on the req object
     req.post = post;
 		
-		console.log("----- invoke next() pass control to next matching route")
+		console.log("---------- invoke next() pass control to next matching route")
 
 		// Passes control to the next matching route
     return next();
   });
 });
 
-// Route for returning a single post
+// GET A SINGLE POST
 // localhost:3000/posts/:id
-router.get('/posts/:post', function(req, res) {
-  console.log("/posts/:post invoked" + "\n"+"This is the document received:" + req.post)
+router.get('/posts/:postId', function(req, res) {
+  console.log("-----/posts/:postId invoked" + "\n"+"This is the document received:" + req.post)
   res.json(req.post);
 });
 
-// Add upvote route
-router.put('/posts/:post/upvote', function(req, res, next){
+// ADD UPVOTE TO A POST
+router.put('/posts/:postId/upvote', function(req, res, next){
 	// invoke post's upvote() method 
 	req.post.upvote(function(err, post){
 		if(err){return next(err);}
@@ -76,8 +86,33 @@ router.put('/posts/:post/upvote', function(req, res, next){
 	});
 });
 
-// COMMENTS
-router.post('/posts/:post/comments', function(req, res, next){
+/************************
+ *       COMMENTS       * 
+ ************************/
+
+// COMMENTID PARAM MIDDLEWARE
+router.param('commentId', function(req, res, next, id){
+	console.log("----- commentId PARAM MIDDLEWARE hit")
+	// Query for the comment
+	var query = Comment.findById(id);
+	// Get doc from query
+	query.exec(function(err, comment){
+		req.post.comment = comment;
+		return next();
+	});
+});
+
+// GET A SINGLE COMMENT 
+router.get('/posts/:postId/comments/:commentId', function(req, res){
+	console.log("----- GET /posts/:postId/comments/:commentId invoked")
+	console.log(req.post.comment)
+	res.json(req.post.comment)
+});
+
+
+// CREATE COMMENT, ADD TO POST
+
+router.post('/posts/:postId/comments', function(req, res, next){
 	// create new comment
 	var comment = new Comment(req.body);
 	// set post property on comment
@@ -92,10 +127,16 @@ router.post('/posts/:post/comments', function(req, res, next){
 			// Send saved comment
 			res.json(comment);
 		});
-
 	});
 });
 
-
+// ADD UPVOTE TO COMMENT
+router.put('/posts/:postId/comments/:commentId/upvote', function(req, res, next){
+	console.log("----- PUT comment upvote")
+		req.post.comment.upvote(function(err, comment){
+			if(err){return next(err);}
+			res.json(comment)
+	});
+});
 
 module.exports = router;
