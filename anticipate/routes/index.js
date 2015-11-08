@@ -72,8 +72,12 @@ router.param('postId', function(req, res, next, id, name) {
 // GET A SINGLE POST
 // localhost:3000/posts/:id
 router.get('/posts/:postId', function(req, res) {
-  console.log("-----/posts/:postId invoked" + "\n"+"This is the document received:" + req.post)
-  res.json(req.post);
+  console.log("-----/posts/:postId invoked")
+  console.log("This is the document received:" + req.post)
+  // Populate 'comments' field so comments associated with particular post are loaded
+  req.post.populate('comments', function(err, post){
+		res.json(req.post);
+  });
 });
 
 // ADD UPVOTE TO A POST
@@ -85,6 +89,8 @@ router.put('/posts/:postId/upvote', function(req, res, next){
 		res.json(post);
 	});
 });
+
+
 
 /************************
  *       COMMENTS       * 
@@ -102,6 +108,7 @@ router.param('commentId', function(req, res, next, id){
 	});
 });
 
+
 // GET A SINGLE COMMENT 
 router.get('/posts/:postId/comments/:commentId', function(req, res){
 	console.log("----- GET /posts/:postId/comments/:commentId invoked")
@@ -111,7 +118,6 @@ router.get('/posts/:postId/comments/:commentId', function(req, res){
 
 
 // CREATE COMMENT, ADD TO POST
-
 router.post('/posts/:postId/comments', function(req, res, next){
 	// create new comment
 	var comment = new Comment(req.body);
