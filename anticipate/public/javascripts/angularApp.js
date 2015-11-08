@@ -14,11 +14,18 @@ app.config([
 	'$urlRouterProvider',
 	function($stateProvider, $urlRouterProvider){
 		$stateProvider
+		
 		.state('home', {
-			url: '/home',
-			templateUrl: '/home.html',
-			controller: 'MainCtrl'
+			url         : '/home',
+			templateUrl : '/home.html',
+			controller  : 'MainCtrl',
+			resolve     : {
+				postPromise : ['postsService', function(postsService){
+					return postsService.getAll();
+				}]
+			}
 		})
+		
 		// State where individual post can be accessed 
 		.state('posts', {
 			url: '/posts/{id}',
@@ -34,7 +41,7 @@ app.config([
  *  FACTORY    *
  ****************/
 
-app.factory('postsService', [function(){
+app.factory('postsService', ['$http', function($http){
 
 	var output = {
 		posts : [
@@ -43,6 +50,16 @@ app.factory('postsService', [function(){
 		  {title: 'post 3', upvotes: 20, link: '', comments: []},
 		]
 	};
+
+	// GET ALL POSTS FUNCTION
+	output.getAll = function(){
+		return $http.get('/posts').success(function(data){
+			// Use angular.copy to create deep copy of returned data
+			// Format: angular.copy(source, destination)
+			angular.copy(data, output.posts)
+		});
+	}
+
 
 	return output;
 
