@@ -63,11 +63,23 @@ app.factory('postsService', ['$http', function($http){
 	}
 
 	// CREATE NEW POSTS FUNCTIONALITY
-	output.createPost = function(){
+	output.createPost = function(newPostData){
+		console.log("postsService.createPost invoked")
 		// return of route
-		return $http.post('').success(function(newPost){
+		return $http.post('/posts', newPostData).success(function(newPost){
 			// Once post is created and sent, push to output.posts
 			output.posts.push(newPost);
+		});
+	}
+
+	// UPVOTE POST FUNCTIONALITY
+	output.upvote = function(post){
+		console.log("postsService.upvote invoked")
+		// return of the 'posts/:postId/upvote' route
+		return $http.put('/posts/'+post._id+'/upvote').success(function(postUpvoted){
+			// Post on server is updated, but not on frontend
+			// Add upvote to post on frontend
+			post.upvotes += 1;
 		});
 	}
 
@@ -87,6 +99,7 @@ app.controller('MainCtrl', ['$scope', 'postsService', function($scope, postsServ
 		console.log("$scope.posts")
 		console.log($scope.posts)
 
+
 		// ADD POST FUNCTIONALITY
 		$scope.addPost = function(){
 			
@@ -95,28 +108,23 @@ app.controller('MainCtrl', ['$scope', 'postsService', function($scope, postsServ
 				console.log("Post requires a title!")
 				return ;
 			}
-			// New Post Object
-			var newPost = {
-				title    : $scope.title, 
-				link     : $scope.link, 
-				upvotes  : 0,
-				comments : [
-					{author: "Joe", body: "Whats up!", upvotes: 1},
-					{author: "Joe2", body: "Whats up man!", upvotes: 1}
-				]
-			};
 
-			// Push new post into array
-			$scope.posts.push(newPost);
+			// Hit createPost service method > server call 
+			postsService.createPost({
+				title : $scope.title,
+				link  : $scope.link
+			});
 			
-			// reset
+
+			// reset values
 			$scope.title = '';
 			$scope.link = '';
 		};
 
 		// Upvoting Functionality 
 		$scope.incrementUpvotes = function(post){
-			post.upvotes += 1;
+			// post.upvotes += 1;
+			postsService.upvote(post);
 		};
 	}
 ]);

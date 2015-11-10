@@ -21,18 +21,23 @@ router.get('/posts', function(req, res, next) {
 	console.log("----- GET /posts route hit")
   Post.find(function(err, posts){
     if(err){ return next(err); }
-    console.log("---------- sending posts")
+    console.log("---------- sending posts res")
     res.json(posts);
   });
 });
 
 // CREATE POST
 router.post('/posts', function(req, res, next) {
+  	
+  console.log("----- POST /posts route hit")
+  console.log(req.body)
+  // Create instane of new model
   var newPost = new Post(req.body);
 
   newPost.save(function(err, newPost){
     if(err){ return next(err); }
     // Send the newly created post
+    console.log("---------- new post created, sending res ")
     res.json(newPost);
   });
 });
@@ -75,7 +80,7 @@ router.param('postId', function(req, res, next, id, name) {
 // GET A SINGLE POST
 // localhost:3000/posts/:id
 router.get('/posts/:postId', function(req, res) {
-  console.log("-----/posts/:postId invoked")
+  console.log("----- GET /posts/:postId hit")
   console.log("This is the document received:" + req.post)
   // Populate 'comments' field so comments associated with particular post are loaded
   req.post.populate('comments', function(err, post){
@@ -85,11 +90,14 @@ router.get('/posts/:postId', function(req, res) {
 
 // ADD UPVOTE TO A POST
 router.put('/posts/:postId/upvote', function(req, res, next){
+	console.log("----- PUT posts/:postId/upvote hit")
+	
 	// invoke post's upvote() method 
-	req.post.upvote(function(err, post){
+	req.post.upvote(function(err, upvotedPost){
 		if(err){return next(err);}
+		console.log(upvotedPost)
 		// Post should have an upvote added and saved
-		res.json(post);
+		res.json(upvotedPost);
 	});
 });
 
