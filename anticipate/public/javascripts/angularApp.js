@@ -41,20 +41,33 @@ app.config([
 
 app.factory('postsService', ['$http', function($http){
 
+	// Define our output for the service
 	var output = {
+		// Posts are an array of posts
 		posts : [
-		  {title: 'post 1', upvotes: 5, link: '', comments: []},
-		  {title: 'post 2', upvotes: 2, link: '', comments: []},
-		  {title: 'post 3', upvotes: 20, link: '', comments: []},
+
+			// Dummy data
+		  // {title: 'post 1', upvotes: 5, link: '', comments: []},
+		  // {title: 'post 2', upvotes: 2, link: '', comments: []},
+		  // {title: 'post 3', upvotes: 20, link: '', comments: []},
 		]
 	};
 
 	// GET ALL POSTS FUNCTION
 	output.getAll = function(){
-		return $http.get('/posts').success(function(data){
+		return $http.get('/posts').success(function(allPosts){
 			// Use angular.copy to create deep copy of returned data
 			// Format: angular.copy(source, destination)
-			angular.copy(data, output.posts)
+			angular.copy(allPosts, output.posts)
+		});
+	}
+
+	// CREATE NEW POSTS FUNCTIONALITY
+	output.createPost = function(){
+		// return of route
+		return $http.post('').success(function(newPost){
+			// Once post is created and sent, push to output.posts
+			output.posts.push(newPost);
 		});
 	}
 

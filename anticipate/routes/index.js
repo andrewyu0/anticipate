@@ -26,21 +26,22 @@ router.get('/posts', function(req, res, next) {
   });
 });
 
-
+// CREATE POST
 router.post('/posts', function(req, res, next) {
-  var post = new Post(req.body);
+  var newPost = new Post(req.body);
 
-  post.save(function(err, post){
+  newPost.save(function(err, newPost){
     if(err){ return next(err); }
-
-    res.json(post);
+    // Send the newly created post
+    res.json(newPost);
   });
 });
 
-// POSTID PARAM MIDDLEWARE
+// POSTID PARAM MIDDLEWARE FOR INDIVIDUAL RECORDS
 
 // Create a route for PRELOADING post objects 
-// Any route with :postId in it, this function will be run first. All remaining routes are some form of "/posts/:id"
+// Any route with :postId in it, this function will be run first. 
+// All remaining routes are some form of "/posts/:id"
 // router.param(post) > return query, exec on query for promise > next() 
 // Params of router.param's cb are always: req, res, next, param value, param name
 
