@@ -19,11 +19,9 @@ app.config([
 			url         : '/home',
 			templateUrl : '/home.html',
 			controller  : 'MainCtrl',
-			resolve     : {
-				postPromise : ['postsService', function(postsService){
+			resolve     :  ['postsService', function(postsService){
 					return postsService.getAll();
 				}]
-			}
 		})
 		
 		// State where individual post can be accessed 
@@ -69,9 +67,12 @@ app.factory('postsService', ['$http', function($http){
  * CONTROLLER *
  ****************/
 
-app.controller('MainCtrl', ['$scope', 'postsService', function($scope, postsService, postService){
+app.controller('MainCtrl', ['$scope', 'postsService', function($scope, postsService){
 
 		$scope.posts = postsService.posts;
+
+		console.log("$scope.posts")
+		console.log($scope.posts)
 
 		// ADD POST FUNCTIONALITY
 		$scope.addPost = function(){

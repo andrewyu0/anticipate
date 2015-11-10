@@ -17,9 +17,11 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/posts', function(req, res, next) {
+  
+	console.log("----- GET /posts route hit")
   Post.find(function(err, posts){
     if(err){ return next(err); }
-
+    console.log("---------- sending posts")
     res.json(posts);
   });
 });
