@@ -103,6 +103,16 @@ app.factory('postsService', ['$http', function($http){
 		return $http.post('/posts/' + postId + '/comments', comment);
 	}
 
+	// ADD UPVOTE TO COMMENT
+	output.upvoteComment = function(post, comment){
+		// PUT to '/posts/:postId/comments/:commentId/upvote'
+		return $http.put('/posts/'+post._id+'/comments/'+comment._id+'/upvote').success(function(upvotedComment){
+			console.log("-------------")
+			console.log(upvotedComment)
+			comment.upvotes = upvotedComment.upvotes
+		});
+	}
+
 
 	return output;
 
@@ -176,6 +186,11 @@ function($scope, postsService, currentPost){
 
 		// reset
 		$scope.body = '';
+	}
+
+	// UPVOTE COMMENT FUNCTIONALITY
+	$scope.incrementUpvotes = function(comment){
+		postsService.upvoteComment($scope.post, comment);
 	}
 
 
