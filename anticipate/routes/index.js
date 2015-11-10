@@ -52,7 +52,7 @@ router.post('/posts', function(req, res, next) {
 
 router.param('postId', function(req, res, next, id, name) {
 	
-	console.log("----- /post param hit: ")
+	console.log("----- /postId middleware hit: ")
  	console.log("This is the id in params:" + id)	// "5633b0bbd70442bc34a194af"
 	console.log("name of param: " + name) // "postId"
 
@@ -83,8 +83,15 @@ router.get('/posts/:postId', function(req, res) {
   console.log("----- GET /posts/:postId hit")
   console.log("This is the document received:" + req.post)
   // Populate 'comments' field so comments associated with particular post are loaded
-  req.post.populate('comments', function(err, post){
-		res.json(req.post);
+  
+  var currentPost = req.post;
+
+  // req.post.populate('comments', function(err, post){
+		// res.json(req.post);
+  // });
+
+  currentPost.populate('comments', function(err, post){
+		res.json(currentPost);
   });
 });
 

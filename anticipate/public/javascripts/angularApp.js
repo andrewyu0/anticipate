@@ -26,9 +26,16 @@ app.config([
 		
 		// State where individual post can be accessed 
 		.state('posts', {
-			url: '/posts/{id}',
-			templateUrl: '/posts.html',
-			controller: 'PostsCtrl'
+			url         : '/posts/{id}',
+			templateUrl : '/posts.html',
+			controller  : 'PostsCtrl',
+			resolve     : {
+				currentPost : ['$stateParams','postsService', function($stateParams, postsService){
+				// Pretty important; can invoke the service method with
+				// param using $stateParams.id in the resolve
+					return postsService.getOne($stateParams.id)
+				}] 
+			}
 		});
 		// If app receives an undefined URL, redirect to home 
 		$urlRouterProvider.otherwise('home');
@@ -58,11 +65,19 @@ app.factory('postsService', ['$http', function($http){
 		return $http.get('/posts').success(function(allPosts){
 			// Use angular.copy to create deep copy of returned data
 			// Format: angular.copy(source, destination)
-			angular.copy(allPosts, output.posts)
+			// Once this promise is resolved, it will set the value of output.posts
+			angular.copy(allPosts, output.posts);
 		});
 	}
 
-	// CREATE NEW POSTS FUNCTIONALITY
+	// GET ONE POST
+output.getOne = function(postId){
+	return $http.get('/posts/' + postId).then(function(res){
+		return res.data;
+	});
+};
+
+	// CREATE NEW POSTS 
 	output.createPost = function(newPostData){
 		console.log("postsService.createPost invoked")
 		// return of route
@@ -72,7 +87,7 @@ app.factory('postsService', ['$http', function($http){
 		});
 	}
 
-	// UPVOTE POST FUNCTIONALITY
+	// UPVOTE POST 
 	output.upvote = function(post){
 		console.log("postsService.upvote invoked")
 		// return of the 'posts/:postId/upvote' route
@@ -133,14 +148,16 @@ app.controller('MainCtrl', ['$scope', 'postsService', function($scope, postsServ
 
 app.controller('PostsCtrl', [
 '$scope',
-'$stateParams',
-'postsService',
-function($scope, $stateParams, postsService){
+'currentPost',
+function($scope, currentPost){
 
+	console.log(currentPost)
 	// Grabs appropriate post from 'posts' service using id from $stateParams
-	$scope.post = postsService.posts[$stateParams.id];
+	// $scope.post = postsService.getOne($stateParams.id);
+	// $scope.post = postsService.currentPost;
 
-	console.log($scope.post)
+	// $scope.post = postsService.currentPost;
+	$scope.post = currentPost
 
 	// ADD COMMENT FUNCTIONALITY
 	$scope.addComment = function(){
