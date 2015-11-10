@@ -157,29 +157,9 @@ app.controller('PostsCtrl', [
 'currentPost',
 function($scope, postsService, currentPost){
 
-	console.log(currentPost)
-	// Grabs appropriate post from 'posts' service using id from $stateParams
-	// $scope.post = postsService.getOne($stateParams.id);
-	// $scope.post = postsService.currentPost;
-
-	// $scope.post = postsService.currentPost;
 	$scope.post = currentPost
 
 	// ADD COMMENT FUNCTIONALITY
-	// $scope.addComment = function(){
-		
-	// 	var newComment = {
-	// 		body    : $scope.body,
-	// 		author  : 'user',
-	// 		upvotes : 0
-	// 	};
-
-	// 	$scope.post.comments.push(newComment);
-	// 	// reset
-	// 	$scope.body = '';
-	// }	
-
-
 	$scope.addComment = function(){
 		if($scope.body === ''){return;}
 
@@ -189,6 +169,7 @@ function($scope, postsService, currentPost){
 			upvotes : 0
 		};
 
+		// Call addComment service method, write to db
 		postsService.addComment($scope.post._id, newComment).success(function(newCommentSaved){
 			$scope.post.comments.push(newCommentSaved);
 		});
