@@ -137,8 +137,13 @@ router.get('/posts/:postId/comments/:commentId', function(req, res){
 
 // CREATE COMMENT, ADD TO POST
 router.post('/posts/:postId/comments', function(req, res, next){
+	
+	console.log("---- POST /posts/:postId/comments hit")
 	// create new comment
 	var comment = new Comment(req.body);
+	console.log("----- NEW COMMENT")
+	console.log(comment)
+
 	// set post property on comment
 	comment.post = req.post;
 	// save the comment to db
@@ -148,8 +153,11 @@ router.post('/posts/:postId/comments', function(req, res, next){
 		req.post.comments.push(comment);
 		req.post.save(function(err,post){
 			if(err){return next(err);}
+			
+			console.log(comment)
 			// Send saved comment
 			res.json(comment);
+
 		});
 	});
 });

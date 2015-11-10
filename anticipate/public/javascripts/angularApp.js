@@ -52,7 +52,6 @@ app.factory('postsService', ['$http', function($http){
 	var output = {
 		// Posts are an array of posts
 		posts : [
-
 			// Dummy data
 		  // {title: 'post 1', upvotes: 5, link: '', comments: []},
 		  // {title: 'post 2', upvotes: 2, link: '', comments: []},
@@ -71,11 +70,11 @@ app.factory('postsService', ['$http', function($http){
 	}
 
 	// GET ONE POST
-output.getOne = function(postId){
-	return $http.get('/posts/' + postId).then(function(res){
-		return res.data;
-	});
-};
+	output.getOne = function(postId){
+		return $http.get('/posts/' + postId).then(function(res){
+			return res.data;
+		});
+	};
 
 	// CREATE NEW POSTS 
 	output.createPost = function(newPostData){
@@ -96,6 +95,12 @@ output.getOne = function(postId){
 			// Add upvote to post on frontend
 			post.upvotes += 1;
 		});
+	}
+
+	// ADD COMMENT
+	output.addComment = function(postId, comment){
+		// POST '/posts/:postId/comments'
+		return $http.post('/posts/' + postId + '/comments', comment);
 	}
 
 
@@ -148,8 +153,9 @@ app.controller('MainCtrl', ['$scope', 'postsService', function($scope, postsServ
 
 app.controller('PostsCtrl', [
 '$scope',
+'postsService',
 'currentPost',
-function($scope, currentPost){
+function($scope, postsService, currentPost){
 
 	console.log(currentPost)
 	// Grabs appropriate post from 'posts' service using id from $stateParams
@@ -160,16 +166,36 @@ function($scope, currentPost){
 	$scope.post = currentPost
 
 	// ADD COMMENT FUNCTIONALITY
-	$scope.addComment = function(){
+	// $scope.addComment = function(){
 		
+	// 	var newComment = {
+	// 		body    : $scope.body,
+	// 		author  : 'user',
+	// 		upvotes : 0
+	// 	};
+
+	// 	$scope.post.comments.push(newComment);
+	// 	// reset
+	// 	$scope.body = '';
+	// }	
+
+
+	$scope.addComment = function(){
+		if($scope.body === ''){return;}
+
 		var newComment = {
 			body    : $scope.body,
 			author  : 'user',
 			upvotes : 0
 		};
 
-		$scope.post.comments.push(newComment);
+		postsService.addComment($scope.post._id, newComment).success(function(newCommentSaved){
+			$scope.post.comments.push(newCommentSaved);
+		});
+
 		// reset
 		$scope.body = '';
-	}	
+	}
+
+
 }]);
