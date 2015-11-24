@@ -1,15 +1,40 @@
 body {
   /*padding: 50px;*/
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  /*font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;*/
   /*font-family: Roboto-Light;*/
   /*font-weight: 200;*/
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 100;
 }
+
 
 a {
   color: #00B7FF;
 }
 
-.post {
-	margin-top:20px;
+.center {
+	text-align: center;
+}
 
+.post-container {
+	padding-top: 30px;
+}
+
+.post {
+	margin-top: 10px;
+}
+
+.post__title {
+	font-size: 18px;
+	padding-right: 5px;
+}
+
+.post-button {
+	background-color: #00B7FF;
+	border-color: #00B7FF;
+	width: 150px;
+}
+
+.post-form {
+	padding-top: 30px;
 }
