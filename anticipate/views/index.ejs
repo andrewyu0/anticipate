@@ -2,6 +2,7 @@
 	<head>
 		<title>Anticipate</title>
 			<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">		
+			<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 		  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
     	<script src="/javascripts/angularApp.js"></script>
@@ -15,12 +16,14 @@
 		    	<!-- home.html template -->
 
 		    	<script type="text/ng-template" id="/home.html">
-						<div ng-repeat="post in posts | orderBy: '-upvotes'">
-							<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
-							{{post.upvotes}}
-							<span><a ng-show="post.link" href="{{post.link}}">{{post.title}}</a></span>
-							<span ng-hide="post.link">{{post.title}}</span>
-							<span><a href='#/posts/{{post._id}}'>Coments</a></span>
+						<div ng-repeat="post in posts | orderBy: '-upvotes'" >
+							<div class="post" >
+								<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
+								{{post.upvotes}}
+								<span><a ng-show="post.link" href="{{post.link}}">{{post.title}}</a></span>
+								<span ng-hide="post.link">{{post.title}}</span>
+								<span><a href='#/posts/{{post._id}}'>Coments</a></span>							
+							</div>
 						</div>
 						
 
@@ -69,7 +72,11 @@
 				        ng-model="body"></input>
 				      </div>
 				      <button type="submit" class="btn btn-primary">Post</button>
-				    </form>				  
+				    </form>		
+						
+						<h4>
+							<a href="/#/home">HOME</a>
+						</h4>
 					</script>
 
 		  	</div>

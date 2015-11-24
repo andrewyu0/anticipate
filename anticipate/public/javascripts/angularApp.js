@@ -110,6 +110,7 @@ app.factory('postsService', ['$http', function($http){
 			console.log("-------------")
 			console.log(upvotedComment)
 			comment.upvotes = upvotedComment.upvotes
+			return upvotedComment
 		});
 	}
 

@@ -10,6 +10,7 @@ var mongoose     = require('mongoose');
 // DB setup
 require('./models/posts-schema');
 require('./models/comments-schema');
+require('./models/users-schema');
 mongoose.connect('mongodb://localhost/anticipate');
 
 
